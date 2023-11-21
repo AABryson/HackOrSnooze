@@ -1,6 +1,7 @@
 "use strict";
 
 // So we don't have to keep re-finding things on page, find DOM elements once:
+//practice making change and committing 
 
 const $body = $("body");
 
