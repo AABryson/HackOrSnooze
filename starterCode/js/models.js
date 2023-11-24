@@ -127,6 +127,7 @@ class User {
    * - name: the user's full name
    */
 //--register new user in api; will call this method in function for filling out form and then submit event; signup(evt)
+//--will get parameters from function it is nested in; they will be in the input values;
 //--creates new User object (see return below)
   static async signup(username, password, name) {
     const response = await axios({
