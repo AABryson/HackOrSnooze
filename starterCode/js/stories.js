@@ -6,11 +6,12 @@ let storyList;
 /** Get and show stories when site first loads. */
 
 async function getAndShowStoriesOnStart() {
-  //--class StoryList; method getStories; alls api, makes array of story instances using .map; 'storyList' is declared above; getStories is static; called on class itself, not instance; eventually returns new StoryList(stories); returns to getStories() which is method in StoryList? assigns new StoryList to storyList
+  //--class StoryList; method getStories; calls api, makes array of story instances using .map; 'storyList' is declared above; getStories is static; called on class itself, not instance; eventually returns new StoryList(stories); returns to getStories() which is method in StoryList? assigns new StoryList to storyList
   storyList = await StoryList.getStories();
   $storiesLoadingMsg.remove();
 
   putStoriesOnPage();
+  $addStoryForm.hide()
 }
 /**
  * A render method to render HTML for an individual Story instance
@@ -24,6 +25,7 @@ function generateStoryMarkup(story) {
   //--if passed in story object, call getHostName method on object
   //--method from class Story; my function - supposed to parse hostname out of url and return it
   const hostName = story.getHostName();
+  console.log(hostName)
   //--using the story object, use it properties to fill in html
   //--Returns the markup for each story in StoryList array;
   return $(`
@@ -55,4 +57,38 @@ function putStoriesOnPage() {
   }
 
   $allStoriesList.show();
+  console.log($allStoriesList)
 }
+
+async function submitNewStory(event) {
+  event.preventDefault()
+  console.debug('submitNewStory');
+  
+
+  //--get values for inputs
+  let inputTitleVal = $('#title-val').val();
+  console.log(inputTitleVal)
+  let inputURLVal = $('#url-val').val()
+  let inputAuthorVal = $('#author-val').val()
+  const username = currentUser.username
+  // const storyData = { title, url, author, username };
+  const newStoryObject = {
+    title : inputTitleVal,
+    author : inputAuthorVal,
+    url: inputURLVal,
+    user: username
+    }
+  console.log(storyList)
+  const ownStory = await storyList.addStory(currentUser, newStoryObject);
+  console.log(ownStory)
+   // hide the form and reset it
+  $addStoryForm.hide()
+  // $addStoryForm.trigger("reset");
+  console.log(storyList)
+  storyList = await StoryList.getStories();
+  putStoriesOnPage();
+  return storyList
+}
+
+//--event listener for submitting own story
+$('#addStory').on("click", submitNewStory);

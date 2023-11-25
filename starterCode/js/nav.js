@@ -44,3 +44,11 @@ function updateNavOnLogin() {
   //--current udsers username to anchor tag on navbar using .text()
   $navUserProfile.text(`${currentUser.username}`).show();
 }
+
+function navAddStoryClick(event) {
+  console.debug('navAddStoryClick', event);
+  // hidePageComponents();
+  $addStoryForm.show()
+}
+
+$('#addStoryLink').on('click', navAddStoryClick);

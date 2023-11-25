@@ -25,11 +25,12 @@ class Story {
     // UNIMPLEMENTED: complete this function!
     const urlObject = new URL (this.url);
     console.log(urlObject);
-    let hostName = urlObject.hostname
-    console.log(hostName)
-    return hostName
+    // let hostName = urlObject.hostname
+    let host = urlObject.host;
+    console.log(host)
+    // return hostName
     //--their original
-    //-- return "hostname.com";
+    return host
     
   }
 }
@@ -50,21 +51,18 @@ class StoryList {
    *  - makes a single StoryList instance out of that
    *  - returns the StoryList instance.
    */
-//--result is a new StoryList object that has as an attribute the newStoryObjectInstancesArray???; so StoryList object now has new property: an array of story objects;
+//--result is a new StoryList object that has as an attribute an array of stories; so StoryList object now has new property: 
   static async getStories() {
     // Note presence of `static` keyword: this indicates that getStories is
-    //  **not** an instance method. Rather, it is a method that is called on the
-    //  class directly. Why doesn't it make sense for getStories to be an
-    //  instance method?
+    //  **not** an instance method. Rather, it is a method that is called on the class directly. Why doesn't it make sense for getStories to be an instance method?
 
     // query the /stories endpoint (no auth required)
-    //--returns object with data.stories property which has an array of individual story objects?
+    //--returns object with data.stories property which has an array of individual story objects
     const response = await axios({
       url: `${BASE_URL}/stories`,
       method: "GET",
     });
     console.log(response)
-
     // turn plain old story objects from API into instances of Story class
     //--use .map to iterate over stories array;response.data.stories is an array;
     //--a story object is the value of each iteration; creates new array with a 'new Story' object for each story in array;
@@ -83,9 +81,38 @@ class StoryList {
    * Returns the new Story instance
    */
 
-  async addStory( /* user, newStory */) {
+  async addStory(user, newStory) {
     // UNIMPLEMENTED: complete this function!
-  }
+    console.log(user)
+    let objectForPostRequest = {
+      token : user.loginToken,
+      story : {
+      title : newStory.title,
+      author: newStory.author,
+      url: newStory.url
+      }
+    }
+    console.log(objectForPostRequest)
+    const newStoryInstance = await axios.post("https://hack-or-snooze-v3.herokuapp.com/stories", objectForPostRequest)
+    console.log(newStoryInstance)
+    this.stories.unshift(newStoryInstance);
+    user.ownStories.unshift(newStoryInstance);
+    return newStoryInstance;
+    // const token = user.loginToken;
+    // let response = await axios.post("https://hack-or-snooze-v3.herokuapp.com/stories", {
+    //   token: token,
+    //   story: {
+    //     author: newStory.author,
+    //     title: newStory.title,
+    //     url: newStory.url
+    //   }
+    // })
+    // const newStoryObject = new Story(response.data.story);
+    // this.stories.unshift(newStoryObject);
+    // user.ownStories.unshift(newStoryObject);
+
+    // return newStoryObject;
+  }  
 }
 
 
