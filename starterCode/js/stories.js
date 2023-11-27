@@ -30,6 +30,7 @@ function generateStoryMarkup(story) {
   //--Returns the markup for each story in StoryList array;
   return $(`
       <li id="${story.storyId}">
+      <button type="click" id="favorite">Favorite</button>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
