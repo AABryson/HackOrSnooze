@@ -11,7 +11,10 @@ function navAllStories(evt) {
   //--in main.js; will hide other elements on the page
   hidePageComponents();
   //-loops trhough storyList array and generates and appends html markup for each story; stories.js
+  $favoritesList.hide();
   putStoriesOnPage();
+
+
 }
 //--event delegation
 //--navbar first anchor tag; says hack or snooze

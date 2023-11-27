@@ -12,6 +12,7 @@ async function getAndShowStoriesOnStart() {
 
   putStoriesOnPage();
   $addStoryForm.hide()
+  $('#favoritesList').hide()
 }
 /**
  * A render method to render HTML for an individual Story instance
@@ -98,11 +99,14 @@ async function chooseFavoriteStory(event) {
   console.log(event);
   console.log(event.target);
   let $targetEvent = $(event.target);
-  if ($targetEvent.text() === 'Favorite') {
-    $targetEvent.text('Unfavorite');
-  } else if($targetEvent.text() === 'Unfavorite') {
-    $targetEvent.text('Favorite');
-  }
+  $targetEvent.hide()
+  // if ($targetEvent.text() === 'Favorite') {
+  //   // $targetEvent.text('Unfavorite');
+  //   $targetEvent.hide()
+  // }
+  // } else if($targetEvent.text() === 'Unfavorite') {
+  //   $targetEvent.text('Favorite');
+  // }
   const $closestLI = $targetEvent.closest("li");
   console.log($closestLI);
   const storyID = $closestLI.attr('id');
@@ -111,6 +115,7 @@ async function chooseFavoriteStory(event) {
   // const story = storyList.stories.find(s => s.storyID === storyID);
   // console.log(story)
   // await currentUser.addFavorite(story)
+  
   let userName = currentUser.username;
   console.log(userName)
   let token = currentUser.loginToken;
@@ -118,7 +123,9 @@ async function chooseFavoriteStory(event) {
   let response = await axios.post(`https://hack-or-snooze-v3.herokuapp.com/users/${userName}/favorites/${storyID}`, {
     token: token,
   });
-  console.log(response)
+    console.log(response)
+    console.log(currentUser.favorites)
+}
 
 
   // if ($targetEvent.text() === 'unfavorite') {
@@ -127,7 +134,7 @@ async function chooseFavoriteStory(event) {
   
   // 
   
-}
+
 const $button = $('#favorite')
 
 
@@ -135,13 +142,51 @@ $storiesContainer.on('click', $button,
 chooseFavoriteStory)
 
 
-async function getFavoriteStories(event){
-  console.log(event)
-  console.log(event.target)
+async function getFavoriteStories(){
   let userName = currentUser.username;
   let token = currentUser.loginToken;
   console.log(currentUser.favorites)
+  return currentUser.favorites
+}
+
+
+async function showFavoriteStories(){
+  console.log(currentUser.favorites)
+  $favoritesList.empty()
+  // let favoritesArray = getFavoriteStories();
+  for (let story of currentUser.favorites) {
+    let favList = $(`
+    <li id="${story.storyId}" class="liFavorites">
+      <a href="${story.url}" target="a_blank" class="story-link-fav">
+        ${story.title}
+      </a>
+      <small class="story-author-fav">by ${story.author}</small>
+      <small class="story-user-fav">posted by ${story.username}</small>
+      <button type='click' id="removeFav">Remove</button>
+    </li>
+  `);
+    $favoritesList.append(favList)
+    hidePageComponents()
+    $favoritesList.show()
+  }
 }
 
 let $navFavoritesList = $('#navFavoritesList');
-$navFavoritesList.on('click', getFavoriteStories)
+$navFavoritesList.on('click', showFavoriteStories)
+
+
+// async function removeFavoriteFromAPI(event) {
+//   console.log(event.target)
+//   const $closestLI = $targetEvent.closest("li");
+//   console.log($closestLI);
+//   const storyID = $closestLI.attr('id');
+//   console.log(storyID)
+//   console.log(currentUser)
+//   let $deleteResponse = await axios.delete(`https://hack-or-snooze-v3.herokuapp.com/users/${userName}/favorites/${storyID}`, {
+//     token: token,
+//   });
+//   console.log($deleteResponse)
+// }
+
+// let $removeFav = $('#removeFav')
+// $removeFav.on('click', removeFavoriteFromAPI)

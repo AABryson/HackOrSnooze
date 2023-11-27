@@ -26,6 +26,10 @@
   margin: 18px 0;
 }
 
+.story-link-fav {
+  font-size: 15px;
+}
+
 .story-link:hover {
   text-decoration: none;
 }
@@ -36,4 +40,18 @@
 
 .story-user {
   display: block;
+}
+
+#removeFav {
+  
+  width: 50px;
+  height: 25px;
+  font-size: 10px;
+  
+}
+
+.liFavorites {
+  margin-top: 20px;
+  margin-left: 10px;
+
 }
