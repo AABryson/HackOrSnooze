@@ -30,7 +30,7 @@ function generateStoryMarkup(story) {
   //--Returns the markup for each story in StoryList array;
   return $(`
       <li id="${story.storyId}">
-      <button type="click" id="favorite">Favorite</button>
+      <button type="click" id="favorite" display-favorite="favorite" display-notFavorite="unfavorite">Favorite</button>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -93,3 +93,30 @@ async function submitNewStory(event) {
 
 //--event listener for submitting own story
 $('#addStory').on("click", submitNewStory);
+
+function submitFavoriteStory(event) {
+  console.log(event);
+  console.log(event.target);
+  let $targetEvent = $(event.target);
+  let $targetFav = $targetEvent.attr('disply-favorite');
+  let $targetUnfav = $targetEvent.attr('display-notfavorite')
+  if ($targetEvent.text() === $targetFav) {
+    $targetEvent.text($targetUnfav);
+  } else {
+    $targetEvent.text("Favorite");
+  }
+
+  // if ($targetEvent.text() === 'unfavorite') {
+  //   $targetEvent.text('Favorite')
+  // }
+  
+  // const $closestLI = $targetEvent.closest("li")
+  // const storyID = $closestLI.attr('id')
+  // const story = storyList.stories.find(s => s.storyID === storyID)
+  // await currentUser.addFavorite(story)
+  
+}
+const $button = $('#favorite')
+
+
+$storiesContainer.on('click', $button, submitFavoriteStory)
