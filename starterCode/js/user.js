@@ -28,6 +28,8 @@ async function login(evt) {
   saveUserCredentialsInLocalStorage();
   //--when user signs up, sets up ui for user with updated navbar, etc.
   updateUIOnUserLogin();
+  $loginForm.hide()
+  $signupForm.hide()
 }
 //-attched login function from above as event handler;
 $loginForm.on("submit", login);
@@ -53,6 +55,9 @@ async function signup(evt) {
   updateUIOnUserLogin();
 //--resets entire second form;
   $signupForm.trigger("reset");
+  //--not sure this is correct; not sure
+  $loginForm.hide()
+  $signupForm.hide()
 }
 //--event listener on second form; uses singup function just above as handler;  probably when click on 'create account' button;
 $signupForm.on("submit", signup);
