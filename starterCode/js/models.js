@@ -43,6 +43,7 @@ class Story {
 class StoryList {
   constructor(stories) {
     this.stories = stories;
+   
   }
 
   /** Generate a new StoryList. It:
@@ -80,6 +81,14 @@ class StoryList {
    *
    * Returns the new Story instance
    */
+  async getFavoriteStories(){
+    let userName = currentUser.username;
+    let token = currentUser.loginToken;
+    let response = await axios.get(`https://hack-or-snooze-v3.herokuapp.com/users/${userName}/favorites`, {
+      token:token,
+    })
+    console.log(response)
+  }
 
   async addStory(user, newStory) {
     // UNIMPLEMENTED: complete this function!

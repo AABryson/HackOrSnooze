@@ -39,7 +39,7 @@
   </div>
   <div class="nav-right">
     <a class="nav-link" id="addStoryLink">Add story</a>
-    <a class="nav-link" id="favoritesList">Favorites</a>
+    <button id="navFavoritesList">Favorites</button>
     <a class="nav-link" href="#" id="nav-login">login/signup</a>
     <a class="nav-link" href="#" id="nav-user-profile"></a>
     <a class="hidden" id="nav-logout" href="#"><small>(logout)</small></a>
@@ -48,6 +48,7 @@
 
 <!-- area for stories (all stories, user stories, favorites) -->
 <section class="stories-container container">
+  <div id="favoritesList"></div>
 <!-- add story form-->
   <form id="addStory-form" action="">
     <h4>Add a New Story</h4>
@@ -64,6 +65,7 @@
 
   <!-- List of all stories -->
   <ol id="all-stories-list" class="stories-list"></ol>
+  <ol id="favortiesList"></ol>
 
 </section>
 

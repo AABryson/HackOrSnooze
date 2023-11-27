@@ -94,7 +94,7 @@ async function submitNewStory(event) {
 //--event listener for submitting own story
 $('#addStory').on("click", submitNewStory);
 
-function submitFavoriteStory(event) {
+async function chooseFavoriteStory(event) {
   console.log(event);
   console.log(event.target);
   let $targetEvent = $(event.target);
@@ -103,20 +103,45 @@ function submitFavoriteStory(event) {
   } else if($targetEvent.text() === 'Unfavorite') {
     $targetEvent.text('Favorite');
   }
-
+  const $closestLI = $targetEvent.closest("li");
+  console.log($closestLI);
+  const storyID = $closestLI.attr('id');
+  console.log(storyID)
+  console.log(currentUser)
+  // const story = storyList.stories.find(s => s.storyID === storyID);
+  // console.log(story)
+  // await currentUser.addFavorite(story)
+  let userName = currentUser.username;
+  console.log(userName)
+  let token = currentUser.loginToken;
+  console.log(token)
+  let response = await axios.post(`https://hack-or-snooze-v3.herokuapp.com/users/${userName}/favorites/${storyID}`, {
+    token: token,
+  });
+  console.log(response)
 
 
   // if ($targetEvent.text() === 'unfavorite') {
   //   $targetEvent.text('Favorite')
   // }
   
-  // const $closestLI = $targetEvent.closest("li")
-  // const storyID = $closestLI.attr('id')
-  // const story = storyList.stories.find(s => s.storyID === storyID)
-  // await currentUser.addFavorite(story)
+  // 
   
 }
 const $button = $('#favorite')
 
 
-$storiesContainer.on('click', $button, submitFavoriteStory)
+$storiesContainer.on('click', $button, 
+chooseFavoriteStory)
+
+
+async function getFavoriteStories(event){
+  console.log(event)
+  console.log(event.target)
+  let userName = currentUser.username;
+  let token = currentUser.loginToken;
+  console.log(currentUser.favorites)
+}
+
+let $navFavoritesList = $('#navFavoritesList');
+$navFavoritesList.on('click', getFavoriteStories)
