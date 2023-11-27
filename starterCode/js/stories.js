@@ -98,13 +98,13 @@ function submitFavoriteStory(event) {
   console.log(event);
   console.log(event.target);
   let $targetEvent = $(event.target);
-  let $targetFav = $targetEvent.attr('disply-favorite');
-  let $targetUnfav = $targetEvent.attr('display-notfavorite')
-  if ($targetEvent.text() === $targetFav) {
-    $targetEvent.text($targetUnfav);
-  } else {
-    $targetEvent.text("Favorite");
+  if ($targetEvent.text() === 'Favorite') {
+    $targetEvent.text('Unfavorite');
+  } else if($targetEvent.text() === 'Unfavorite') {
+    $targetEvent.text('Favorite');
   }
+
+
 
   // if ($targetEvent.text() === 'unfavorite') {
   //   $targetEvent.text('Favorite')
