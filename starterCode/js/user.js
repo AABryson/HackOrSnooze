@@ -56,9 +56,10 @@ async function signup(evt) {
 //--resets entire second form;
   $signupForm.trigger("reset");
   //--not sure this is correct; not sure
-  $loginForm.hide()
-  $signupForm.hide()
+  // $loginForm.hide()
+  // $signupForm.hide()
 }
+
 //--event listener on second form; uses singup function just above as handler;  probably when click on 'create account' button;
 $signupForm.on("submit", signup);
 
@@ -128,4 +129,17 @@ function updateUIOnUserLogin() {
 // --When a user first logins in, update the navbar to reflect that.
 //--in nav.js
   updateNavOnLogin();
+  generateUserProfile();
+  $storiesContainer.show()
 }
+
+/** Show a "user profile" part of page built from the current user's info. */
+
+function generateUserProfile() {
+  console.debug("generateUserProfile");
+
+  $("#profile-name").text(currentUser.name);
+  $("#profile-username").text(currentUser.username);
+  $("#profile-account-date").text(currentUser.createdAt.slice(0, 10));
+}
+

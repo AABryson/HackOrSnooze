@@ -22,15 +22,16 @@ class Story {
   /** Parses hostname out of URL and returns it. */
 
   getHostName() {
+    return new URL(this.url).host;
     // UNIMPLEMENTED: complete this function!
-    const urlObject = new URL (this.url);
-    console.log(urlObject);
-    // let hostName = urlObject.hostname
-    let host = urlObject.host;
-    console.log(host)
-    // return hostName
-    //--their original
-    return host
+    // const urlObject = new URL (this.url);
+    // console.log(urlObject);
+    // // let hostName = urlObject.hostname
+    // let host = urlObject.host;
+    // console.log(host)
+    // // return hostName
+    // //--their original
+    // return host
     
   }
 }
@@ -43,7 +44,6 @@ class Story {
 class StoryList {
   constructor(stories) {
     this.stories = stories;
-   
   }
 
   /** Generate a new StoryList. It:
@@ -90,23 +90,37 @@ class StoryList {
     console.log(response)
   }
 
-  async addStory(user, newStory) {
+  async addStory(user, { title, author, url }) {
     // UNIMPLEMENTED: complete this function!
     console.log(user)
-    let objectForPostRequest = {
-      token : user.loginToken,
-      story : {
-      title : newStory.title,
-      author: newStory.author,
-      url: newStory.url
-      }
-    }
-    console.log(objectForPostRequest)
-    const newStoryInstance = await axios.post("https://hack-or-snooze-v3.herokuapp.com/stories", objectForPostRequest)
-    console.log(newStoryInstance)
-    this.stories.unshift(newStoryInstance);
-    user.ownStories.unshift(newStoryInstance);
-    return newStoryInstance;
+    const token = user.loginToken;
+    const response = await axios({
+      method: "POST",
+      url: `${BASE_URL}/stories`,
+      data: { token, story: { title, author, url } },
+    });
+
+    const story = new Story(response.data.story);
+    this.stories.unshift(story);
+    user.ownStories.unshift(story);
+
+    return story;
+  }
+    //my original
+    // let objectForPostRequest = {
+    //   token : user.loginToken,
+    //   story : {
+    //   title : newStory.title,
+    //   author: newStory.author,
+    //   url: newStory.url
+    //   }
+    // }
+    // console.log(objectForPostRequest)
+    // const newStoryInstance = await axios.post("https://hack-or-snooze-v3.herokuapp.com/stories", objectForPostRequest)
+    // console.log(newStoryInstance)
+    // this.stories.unshift(newStoryInstance);
+    // user.ownStories.unshift(newStoryInstance);
+    // return newStoryInstance;
     // const token = user.loginToken;
     // let response = await axios.post("https://hack-or-snooze-v3.herokuapp.com/stories", {
     //   token: token,
@@ -121,9 +135,22 @@ class StoryList {
     // user.ownStories.unshift(newStoryObject);
 
     // return newStoryObject;
-  }  
-}
 
+  async removeStory(user, storyId) {
+    const token = user.loginToken;
+    await axios({
+      url: `${BASE_URL}/stories/${storyId}`,
+      method: "DELETE",
+      data: { token: user.loginToken }
+    });
+  // filter out the story whose ID we are removing
+  this.stories = this.stories.filter(story => story.storyId !== storyId);
+
+  // do the same thing for the user's list of stories & their favorites
+  user.ownStories = user.ownStories.filter(s => s.storyId !== storyId);
+  user.favorites = user.favorites.filter(s => s.storyId !== storyId);
+  }
+}
 
 /******************************************************************************
  * User: a user in the system (only used to represent the current user)

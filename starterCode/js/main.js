@@ -23,7 +23,9 @@ const $signupForm = $("#signup-form");
 
 const $addStoryForm = $('#addStory-form')
 
-const $favoritesList = $('#favoritesList')
+const $favoritesList = $('#favoritedStories')
+
+const $ownStories = $("#my-stories");
 
 /** To make it easier for individual components to show just themselves, this
  * is a useful function that hides pretty much everything on the page. After
@@ -31,6 +33,9 @@ const $favoritesList = $('#favoritesList')
  */
 function hidePageComponents() {
   const components = [
+    // $storiesLists,
+    // $submitForm,
+    // $userProfile
     $allStoriesList,
     $loginForm,
     $signupForm,
